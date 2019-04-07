@@ -3,8 +3,9 @@
 A very small library (~200 loc) for Android/Kotlin to remove
 shared preferences boilerplate.
 
-This is a much lighter, Kotlin specific, followup to my [Prefs lib](https://github.com/BoD/android-prefs)
-which is annotation processor based.
+_This is a much lighter, Kotlin specific, followup to my [Prefs lib](https://github.com/BoD/android-prefs)
+which was annotation processor based whereas this one is
+Kotlin delegates based._
 
 ## Usage
 ### 1/ Add the dependencies to your project
