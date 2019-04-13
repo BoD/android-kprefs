@@ -30,13 +30,14 @@ import kotlin.reflect.KProperty
 internal class NullablePreferenceProperty<T>(
     private val sharedPreferences: SharedPreferences,
     private val key: String?,
-    private val getter: SharedPreferences.(String) -> T,
-    private val setter: SharedPreferences.Editor.(String, T) -> Unit
+    private val default: T,
+    private val getter: SharedPreferences.(String, T) -> T,
+    private val setter: SharedPreferences.Editor.(String, T) -> SharedPreferences.Editor
 ) : ReadWriteProperty<Any, T?> {
     override fun getValue(thisRef: Any, property: KProperty<*>): T? {
         val key = Prefs.getKey(property, key)
         if (!sharedPreferences.contains(key)) return null
-        return sharedPreferences.getter(key)
+        return sharedPreferences.getter(key, default)
     }
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: T?) {
@@ -54,11 +55,12 @@ internal class NullablePreferenceProperty<T>(
 internal class NonNullPreferenceProperty<T>(
     private val sharedPreferences: SharedPreferences,
     private val key: String?,
-    private val getter: SharedPreferences.(String) -> T,
-    private val setter: SharedPreferences.Editor.(String, T) -> Unit
+    private val default: T,
+    private val getter: SharedPreferences.(String, T) -> T,
+    private val setter: SharedPreferences.Editor.(String, T) -> SharedPreferences.Editor
 ) : ReadWriteProperty<Any, T> {
     override fun getValue(thisRef: Any, property: KProperty<*>): T {
-        return sharedPreferences.getter(Prefs.getKey(property, key))
+        return sharedPreferences.getter(Prefs.getKey(property, key), default)
     }
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {

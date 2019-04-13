@@ -56,40 +56,44 @@ private abstract class PreferenceLiveData<T>(
 private class NonNullPreferenceLiveData<T>(
     private val sharedPreferences: SharedPreferences,
     private val key: String,
-    private val getter: SharedPreferences.(String) -> T
+    private val default: T,
+    private val getter: SharedPreferences.(String, T) -> T
 ) : PreferenceLiveData<T>(sharedPreferences, key) {
     override val preferenceValue: T?
-        get() = sharedPreferences.getter(this.key)
+        get() = sharedPreferences.getter(this.key, default)
 }
 
 private class NullablePreferenceLiveData<T>(
     private val sharedPreferences: SharedPreferences,
     private val key: String,
-    private val getter: SharedPreferences.(String) -> T
+    private val default: T,
+    private val getter: SharedPreferences.(String, T) -> T
 ) : PreferenceLiveData<T>(sharedPreferences, key) {
     override val preferenceValue: T?
         get() {
             if (!sharedPreferences.contains(key)) return null
-            return sharedPreferences.getter(this.key)
+            return sharedPreferences.getter(this.key, default)
         }
 }
 
 internal class NonNullPreferenceLiveDataProperty<T>(
     private val sharedPreferences: SharedPreferences,
     private val key: String?,
-    private val getter: SharedPreferences.(String) -> T
+    private val default: T,
+    private val getter: SharedPreferences.(String, T) -> T
 ) : ReadOnlyProperty<Any, LiveData<T>> {
     override fun getValue(thisRef: Any, property: KProperty<*>): LiveData<T> {
-        return NonNullPreferenceLiveData<T>(sharedPreferences, getKey(property, key), getter)
+        return NonNullPreferenceLiveData<T>(sharedPreferences, getKey(property, key), default, getter)
     }
 }
 
 internal class NullablePreferenceLiveDataProperty<T>(
     private val sharedPreferences: SharedPreferences,
     private val key: String?,
-    private val getter: SharedPreferences.(String) -> T
+    private val default: T,
+    private val getter: SharedPreferences.(String, T) -> T
 ) : ReadOnlyProperty<Any, LiveData<T>> {
     override fun getValue(thisRef: Any, property: KProperty<*>): LiveData<T> {
-        return NullablePreferenceLiveData<T>(sharedPreferences, getKey(property, key), getter)
+        return NullablePreferenceLiveData<T>(sharedPreferences, getKey(property, key), default, getter)
     }
 }

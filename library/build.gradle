@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android'
 group = 'org.jraf'
 ext.groupPath = group.replace('.', '/')
 ext.artifactId = 'kprefs'
-version = '1.0.0'
+version = '1.1.0'
 
 android {
     compileSdkVersion 28

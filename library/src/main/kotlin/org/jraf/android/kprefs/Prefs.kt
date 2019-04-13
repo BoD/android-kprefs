@@ -38,139 +38,206 @@ class Prefs(
     fileName: String? = null,
     fileMode: Int = Context.MODE_PRIVATE
 ) {
-    private val sharedPreferences: SharedPreferences =
+    val sharedPreferences: SharedPreferences =
         if (fileName != null) context.getSharedPreferences(fileName, fileMode) else PreferenceManager.getDefaultSharedPreferences(context)
 
 
+    // Boolean
+
     fun Boolean(key: String? = null): ReadWriteProperty<Any, Boolean?> = NullablePreferenceProperty(
-        sharedPreferences, key,
-        { k -> getBoolean(k, false) },
-        { k, v -> putBoolean(k, v) }
+        sharedPreferences,
+        key,
+        false,
+        SharedPreferences::getBoolean,
+        SharedPreferences.Editor::putBoolean
     )
 
     fun Boolean(default: Boolean, key: String? = null): ReadWriteProperty<Any, Boolean> = NonNullPreferenceProperty(
-        sharedPreferences, key,
-        { k -> getBoolean(k, default) },
-        { k, v -> putBoolean(k, v) }
+        sharedPreferences,
+        key,
+        default,
+        SharedPreferences::getBoolean,
+        SharedPreferences.Editor::putBoolean
     )
 
-    fun BooleanLiveData(key: String? = null): ReadOnlyProperty<Any, LiveData<Boolean>> = NullablePreferenceLiveDataProperty(sharedPreferences, key) { k ->
-        getBoolean(k, false)
-    }
+    fun BooleanLiveData(key: String? = null): ReadOnlyProperty<Any, LiveData<Boolean>> = NullablePreferenceLiveDataProperty(
+        sharedPreferences,
+        key,
+        false,
+        SharedPreferences::getBoolean
+    )
 
-    fun BooleanLiveData(default: Boolean, key: String? = null): ReadOnlyProperty<Any, LiveData<Boolean>> =
-        NonNullPreferenceLiveDataProperty(sharedPreferences, key) { k ->
-            getBoolean(k, default)
-        }
+    fun BooleanLiveData(default: Boolean, key: String? = null): ReadOnlyProperty<Any, LiveData<Boolean>> = NonNullPreferenceLiveDataProperty(
+        sharedPreferences,
+        key,
+        default,
+        SharedPreferences::getBoolean
+    )
 
+
+    // String
 
     fun String(key: Key? = null): ReadWriteProperty<Any, String?> = NullablePreferenceProperty(
-        sharedPreferences, key?.name,
-        { k -> getString(k, "") },
-        { k, v -> putString(k, v) }
+        sharedPreferences,
+        key?.name,
+        "",
+        SharedPreferences::getString,
+        SharedPreferences.Editor::putString
     )
 
     fun String(default: String, key: Key? = null): ReadWriteProperty<Any, String> = NonNullPreferenceProperty(
-        sharedPreferences, key?.name,
-        { k -> getString(k, default) },
-        { k, v -> putString(k, v) }
+        sharedPreferences,
+        key?.name,
+        default,
+        SharedPreferences::getString,
+        SharedPreferences.Editor::putString
     )
 
-    fun StringLiveData(key: Key? = null): ReadOnlyProperty<Any, LiveData<String>> = NullablePreferenceLiveDataProperty(sharedPreferences, key?.name) { k ->
-        getString(k, "")
-    }
+    fun StringLiveData(key: Key? = null): ReadOnlyProperty<Any, LiveData<String>> = NullablePreferenceLiveDataProperty(
+        sharedPreferences,
+        key?.name,
+        "",
+        SharedPreferences::getString
+    )
 
-    fun StringLiveData(default: String, key: Key? = null): ReadOnlyProperty<Any, LiveData<String>> =
-        NonNullPreferenceLiveDataProperty(sharedPreferences, key?.name) { k ->
-            getString(k, default)
-        }
+    fun StringLiveData(default: String, key: Key? = null): ReadOnlyProperty<Any, LiveData<String>> = NonNullPreferenceLiveDataProperty(
+        sharedPreferences,
+        key?.name,
+        default,
+        SharedPreferences::getString
+    )
 
+
+    // Int
 
     fun Int(key: String? = null): ReadWriteProperty<Any, Int?> = NullablePreferenceProperty(
-        sharedPreferences, key,
-        { k -> getInt(k, 0) },
-        { k, v -> putInt(k, v) }
+        sharedPreferences,
+        key,
+        0,
+        SharedPreferences::getInt,
+        SharedPreferences.Editor::putInt
     )
 
     fun Int(default: Int, key: String? = null): ReadWriteProperty<Any, Int> = NonNullPreferenceProperty(
-        sharedPreferences, key,
-        { k -> getInt(k, default) },
-        { k, v -> putInt(k, v) }
+        sharedPreferences,
+        key,
+        default,
+        SharedPreferences::getInt,
+        SharedPreferences.Editor::putInt
     )
 
-    fun IntLiveData(key: String? = null): ReadOnlyProperty<Any, LiveData<Int>> = NullablePreferenceLiveDataProperty(sharedPreferences, key) { k ->
-        getInt(k, 0)
-    }
+    fun IntLiveData(key: String? = null): ReadOnlyProperty<Any, LiveData<Int>> = NullablePreferenceLiveDataProperty(
+        sharedPreferences,
+        key,
+        0,
+        SharedPreferences::getInt
+    )
 
-    fun IntLiveData(default: Int, key: String? = null): ReadOnlyProperty<Any, LiveData<Int>> = NonNullPreferenceLiveDataProperty(sharedPreferences, key) { k ->
-        getInt(k, default)
-    }
+    fun IntLiveData(default: Int, key: String? = null): ReadOnlyProperty<Any, LiveData<Int>> = NonNullPreferenceLiveDataProperty(
+        sharedPreferences,
+        key,
+        default,
+        SharedPreferences::getInt
+    )
 
+
+    // Float
 
     fun Float(key: String? = null): ReadWriteProperty<Any, Float?> = NullablePreferenceProperty(
-        sharedPreferences, key,
-        { k -> getFloat(k, 0F) },
-        { k, v -> putFloat(k, v) }
+        sharedPreferences,
+        key,
+        0F,
+        SharedPreferences::getFloat,
+        SharedPreferences.Editor::putFloat
     )
 
     fun Float(default: Float, key: String? = null): ReadWriteProperty<Any, Float> = NonNullPreferenceProperty(
-        sharedPreferences, key,
-        { k -> getFloat(k, default) },
-        { k, v -> putFloat(k, v) }
+        sharedPreferences,
+        key,
+        default,
+        SharedPreferences::getFloat,
+        SharedPreferences.Editor::putFloat
     )
 
-    fun FloatLiveData(key: String? = null): ReadOnlyProperty<Any, LiveData<Float>> = NullablePreferenceLiveDataProperty(sharedPreferences, key) { k ->
-        getFloat(k, 0F)
-    }
+    fun FloatLiveData(key: String? = null): ReadOnlyProperty<Any, LiveData<Float>> = NullablePreferenceLiveDataProperty(
+        sharedPreferences,
+        key,
+        0F,
+        SharedPreferences::getFloat
+    )
 
-    fun FloatLiveData(default: Float, key: String? = null): ReadOnlyProperty<Any, LiveData<Float>> =
-        NonNullPreferenceLiveDataProperty(sharedPreferences, key) { k ->
-            getFloat(k, default)
-        }
+    fun FloatLiveData(default: Float, key: String? = null): ReadOnlyProperty<Any, LiveData<Float>> = NonNullPreferenceLiveDataProperty(
+        sharedPreferences,
+        key,
+        default,
+        SharedPreferences::getFloat
+    )
 
+
+    // Long
 
     fun Long(key: String? = null): ReadWriteProperty<Any, Long?> = NullablePreferenceProperty(
-        sharedPreferences, key,
-        { k -> getLong(k, 0) },
-        { k, v -> putLong(k, v) }
+        sharedPreferences,
+        key,
+        0,
+        SharedPreferences::getLong,
+        SharedPreferences.Editor::putLong
     )
 
     fun Long(default: Long, key: String? = null): ReadWriteProperty<Any, Long> = NonNullPreferenceProperty(
-        sharedPreferences, key,
-        { k -> getLong(k, default) },
-        { k, v -> putLong(k, v) }
+        sharedPreferences,
+        key,
+        default,
+        SharedPreferences::getLong,
+        SharedPreferences.Editor::putLong
     )
 
-    fun LongLiveData(key: String? = null): ReadOnlyProperty<Any, LiveData<Long>> = NullablePreferenceLiveDataProperty(sharedPreferences, key) { k ->
-        getLong(k, 0)
-    }
+    fun LongLiveData(key: String? = null): ReadOnlyProperty<Any, LiveData<Long>> = NullablePreferenceLiveDataProperty(
+        sharedPreferences,
+        key,
+        0,
+        SharedPreferences::getLong
+    )
 
-    fun LongLiveData(default: Long, key: String? = null): ReadOnlyProperty<Any, LiveData<Long>> =
-        NonNullPreferenceLiveDataProperty(sharedPreferences, key) { k ->
-            getLong(k, default)
-        }
+    fun LongLiveData(default: Long, key: String? = null): ReadOnlyProperty<Any, LiveData<Long>> = NonNullPreferenceLiveDataProperty(
+        sharedPreferences,
+        key,
+        default,
+        SharedPreferences::getLong
+    )
 
+
+    // Set<String>
 
     fun StringSet(key: String? = null): ReadWriteProperty<Any, Set<String>?> = NullablePreferenceProperty(
-        sharedPreferences, key,
-        { k -> getStringSet(k, setOf()) },
-        { k, v -> putStringSet(k, v) }
+        sharedPreferences,
+        key,
+        setOf(),
+        SharedPreferences::getStringSet,
+        SharedPreferences.Editor::putStringSet
     )
 
     fun StringSet(default: Set<String>, key: String? = null): ReadWriteProperty<Any, Set<String>> = NonNullPreferenceProperty(
-        sharedPreferences, key,
-        { k -> getStringSet(k, default) },
-        { k, v -> putStringSet(k, v) }
+        sharedPreferences,
+        key,
+        default,
+        SharedPreferences::getStringSet,
+        SharedPreferences.Editor::putStringSet
     )
 
-    fun StringSetLiveData(key: String? = null): ReadOnlyProperty<Any, LiveData<Set<String>>> = NullablePreferenceLiveDataProperty(sharedPreferences, key) { k ->
-        getStringSet(k, setOf())
-    }
+    fun StringSetLiveData(key: String? = null): ReadOnlyProperty<Any, LiveData<Set<String>>> = NullablePreferenceLiveDataProperty(
+        sharedPreferences,
+        key,
+        setOf(),
+        SharedPreferences::getStringSet
+    )
 
-    fun StringSetLiveData(default: Set<String>, key: String? = null): ReadOnlyProperty<Any, LiveData<Set<String>>> =
-        NonNullPreferenceLiveDataProperty(sharedPreferences, key) { k ->
-            getStringSet(k, default)
-        }
+    fun StringSetLiveData(default: Set<String>, key: String? = null): ReadOnlyProperty<Any, LiveData<Set<String>>> = NonNullPreferenceLiveDataProperty(
+        sharedPreferences,
+        key,
+        default,
+        SharedPreferences::getStringSet
+    )
 
 
     internal companion object {
