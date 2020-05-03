@@ -27,6 +27,11 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.jraf.android.kprefs.sample.R
 import org.jraf.android.kprefs.sample.prefs.MainPrefs
 import org.jraf.android.kprefs.sample.prefs.SettingsPrefs
@@ -41,11 +46,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
 
         mainPrefs.passwordLiveData.observe(this, Observer {
-            Log.d(TAG, "observed password=$it")
+            Log.d(TAG, "passwordLiveData=$it")
         })
 
         mainPrefs.premiumLiveData.observe(this, Observer {
-            Log.d(TAG, "observed premium=$it")
+            Log.d(TAG, "premiumLiveData=$it")
         })
 
         mainPrefs.login = "john"
@@ -62,6 +67,17 @@ class MainActivity : AppCompatActivity() {
         with(settingsPrefs) {
             Log.d(TAG, "preferredColor=$preferredColor")
             Log.d(TAG, "weekDays=$weekDays")
+        }
+
+        GlobalScope.launch {
+            mainPrefs.passwordFlow.onEach {
+                Log.d(TAG, "passwordFlow=$it")
+            }.launchIn(this)
+
+            delay(1000)
+            mainPrefs.password = "p4Ssw0Rd ${Date()}"
+            delay(1000)
+            mainPrefs.password = "p4Ssw0Rd ${Date()}"
         }
     }
 

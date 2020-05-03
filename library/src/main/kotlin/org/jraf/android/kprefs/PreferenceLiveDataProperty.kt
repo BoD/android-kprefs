@@ -34,15 +34,15 @@ private class NonNullPreferenceLiveData<T>(
     private val sharedPreferences: SharedPreferences,
     private val key: String,
     private val default: T,
-    private val getter: SharedPreferences.(String) -> T?
+    private val getter: SharedPreferences.(String, T) -> T?
 ) : LiveData<T>() {
 
-    private val listener = OnSharedPreferenceChangeListener { _, key ->
+    private val listener = OnSharedPreferenceChangeListener { _, _ ->
         if (this.key == key) value = getPreferenceValue()
     }
 
     private fun getPreferenceValue(): T {
-        return sharedPreferences.getter(this.key) ?: default
+        return if (!sharedPreferences.contains(key)) default else sharedPreferences.getter(this.key, default)!!
     }
 
     override fun onActive() {
@@ -59,16 +59,16 @@ private class NonNullPreferenceLiveData<T>(
 private class NullablePreferenceLiveData<T>(
     private val sharedPreferences: SharedPreferences,
     private val key: String,
-    private val getter: SharedPreferences.(String) -> T?
+    private val default: T,
+    private val getter: SharedPreferences.(String, T) -> T?
 ) : LiveData<T?>() {
 
-    private val listener = OnSharedPreferenceChangeListener { _, key ->
+    private val listener = OnSharedPreferenceChangeListener { _, _ ->
         if (this.key == key) value = getPreferenceValue()
     }
 
     private fun getPreferenceValue(): T? {
-        if (!sharedPreferences.contains(key)) return null
-        return sharedPreferences.getter(this.key)
+        return if (!sharedPreferences.contains(key)) null else sharedPreferences.getter(this.key, default)
     }
 
     override fun onActive() {
@@ -86,7 +86,7 @@ internal class NonNullPreferenceLiveDataProperty<T>(
     private val sharedPreferences: SharedPreferences,
     private val key: String?,
     private val default: T,
-    private val getter: SharedPreferences.(String) -> T?
+    private val getter: SharedPreferences.(String, T) -> T?
 ) : ReadOnlyProperty<Any, LiveData<T>> {
     override fun getValue(thisRef: Any, property: KProperty<*>): LiveData<T> {
         return NonNullPreferenceLiveData(sharedPreferences, getKey(property, key), default, getter)
@@ -96,9 +96,10 @@ internal class NonNullPreferenceLiveDataProperty<T>(
 internal class NullablePreferenceLiveDataProperty<T>(
     private val sharedPreferences: SharedPreferences,
     private val key: String?,
-    private val getter: SharedPreferences.(String) -> T?
+    private val default: T,
+    private val getter: SharedPreferences.(String, T) -> T?
 ) : ReadOnlyProperty<Any, LiveData<T?>> {
     override fun getValue(thisRef: Any, property: KProperty<*>): LiveData<T?> {
-        return NullablePreferenceLiveData<T>(sharedPreferences, getKey(property, key), getter)
+        return NullablePreferenceLiveData<T>(sharedPreferences, getKey(property, key), default, getter)
     }
 }

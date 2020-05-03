@@ -27,6 +27,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
@@ -64,14 +65,31 @@ class Prefs(
 
     fun BooleanLiveData(key: String? = null): ReadOnlyProperty<Any, LiveData<Boolean?>> = NullablePreferenceLiveDataProperty(
         sharedPreferences,
-        key
-    ) { k -> sharedPreferences.getBoolean(k, false) }
+        key,
+        false,
+        SharedPreferences::getBoolean
+    )
 
     fun BooleanLiveData(default: Boolean, key: String? = null): ReadOnlyProperty<Any, LiveData<Boolean>> = NonNullPreferenceLiveDataProperty(
         sharedPreferences,
         key,
-        default
-    ) { k -> sharedPreferences.getBoolean(k, false) }
+        default,
+        SharedPreferences::getBoolean
+    )
+
+    fun BooleanFlow(key: String? = null): ReadOnlyProperty<Any, Flow<Boolean?>> = NullablePreferenceFlowProperty(
+        sharedPreferences,
+        key,
+        false,
+        SharedPreferences::getBoolean
+    )
+
+    fun BooleanFlow(default: Boolean, key: String? = null): ReadOnlyProperty<Any, Flow<Boolean>> = NonNullPreferenceFlowProperty(
+        sharedPreferences,
+        key,
+        default,
+        SharedPreferences::getBoolean
+    )
 
     // endregion
 
@@ -96,14 +114,31 @@ class Prefs(
 
     fun StringLiveData(key: Key? = null): ReadOnlyProperty<Any, LiveData<String?>> = NullablePreferenceLiveDataProperty(
         sharedPreferences,
-        key?.name
-    ) { k -> sharedPreferences.getString(k, null) }
+        key?.name,
+        "",
+        SharedPreferences::getString
+    )
 
     fun StringLiveData(default: String, key: Key? = null): ReadOnlyProperty<Any, LiveData<String>> = NonNullPreferenceLiveDataProperty(
         sharedPreferences,
         key?.name,
-        default
-    ) { k -> sharedPreferences.getString(k, null) }
+        default,
+        SharedPreferences::getString
+    )
+
+    fun StringFlow(key: Key? = null): ReadOnlyProperty<Any, Flow<String?>> = NullablePreferenceFlowProperty(
+        sharedPreferences,
+        key?.name,
+        "",
+        SharedPreferences::getString
+    )
+
+    fun StringFlow(default: String, key: Key? = null): ReadOnlyProperty<Any, Flow<String>> = NonNullPreferenceFlowProperty(
+        sharedPreferences,
+        key?.name,
+        default,
+        SharedPreferences::getString
+    )
 
     // endregion
 
@@ -128,15 +163,33 @@ class Prefs(
 
     fun IntLiveData(key: String? = null): ReadOnlyProperty<Any, LiveData<Int?>> = NullablePreferenceLiveDataProperty(
         sharedPreferences,
-        key
-    ) { k -> sharedPreferences.getInt(k, 0) }
+        key,
+        0,
+        SharedPreferences::getInt
+    )
 
 
     fun IntLiveData(default: Int, key: String? = null): ReadOnlyProperty<Any, LiveData<Int>> = NonNullPreferenceLiveDataProperty(
         sharedPreferences,
         key,
-        default
-    ) { k -> sharedPreferences.getInt(k, 0) }
+        default,
+        SharedPreferences::getInt
+    )
+
+    fun IntFlow(key: String? = null): ReadOnlyProperty<Any, Flow<Int?>> = NullablePreferenceFlowProperty(
+        sharedPreferences,
+        key,
+        0,
+        SharedPreferences::getInt
+    )
+
+
+    fun IntFlow(default: Int, key: String? = null): ReadOnlyProperty<Any, Flow<Int>> = NonNullPreferenceFlowProperty(
+        sharedPreferences,
+        key,
+        default,
+        SharedPreferences::getInt
+    )
 
     // endregion
 
@@ -161,14 +214,31 @@ class Prefs(
 
     fun FloatLiveData(key: String? = null): ReadOnlyProperty<Any, LiveData<Float?>> = NullablePreferenceLiveDataProperty(
         sharedPreferences,
-        key
-    ) { k -> sharedPreferences.getFloat(k, 0F) }
+        key,
+        0F,
+        SharedPreferences::getFloat
+    )
 
     fun FloatLiveData(default: Float, key: String? = null): ReadOnlyProperty<Any, LiveData<Float>> = NonNullPreferenceLiveDataProperty(
         sharedPreferences,
         key,
-        default
-    ) { k -> sharedPreferences.getFloat(k, 0F) }
+        default,
+        SharedPreferences::getFloat
+    )
+
+    fun FloatFlow(key: String? = null): ReadOnlyProperty<Any, Flow<Float?>> = NullablePreferenceFlowProperty(
+        sharedPreferences,
+        key,
+        0F,
+        SharedPreferences::getFloat
+    )
+
+    fun FloatFlow(default: Float, key: String? = null): ReadOnlyProperty<Any, Flow<Float>> = NonNullPreferenceFlowProperty(
+        sharedPreferences,
+        key,
+        default,
+        SharedPreferences::getFloat
+    )
 
     // endregion
 
@@ -193,15 +263,33 @@ class Prefs(
 
     fun LongLiveData(key: String? = null): ReadOnlyProperty<Any, LiveData<Long?>> = NullablePreferenceLiveDataProperty(
         sharedPreferences,
-        key
-    ) { k -> sharedPreferences.getLong(k, 0L) }
+        key,
+        0,
+        SharedPreferences::getLong
+    )
 
 
     fun LongLiveData(default: Long, key: String? = null): ReadOnlyProperty<Any, LiveData<Long>> = NonNullPreferenceLiveDataProperty(
         sharedPreferences,
         key,
-        default
-    ) { k -> sharedPreferences.getLong(k, 0L) }
+        default,
+        SharedPreferences::getLong
+    )
+
+    fun LongFlow(key: String? = null): ReadOnlyProperty<Any, Flow<Long?>> = NullablePreferenceFlowProperty(
+        sharedPreferences,
+        key,
+        0,
+        SharedPreferences::getLong
+    )
+
+
+    fun LongFlow(default: Long, key: String? = null): ReadOnlyProperty<Any, Flow<Long>> = NonNullPreferenceFlowProperty(
+        sharedPreferences,
+        key,
+        default,
+        SharedPreferences::getLong
+    )
 
     // endregion
 
@@ -226,14 +314,31 @@ class Prefs(
 
     fun StringSetLiveData(key: String? = null): ReadOnlyProperty<Any, LiveData<Set<String>?>> = NullablePreferenceLiveDataProperty(
         sharedPreferences,
-        key
-    ) { k -> sharedPreferences.getStringSet(k, null) }
+        key,
+        setOf(),
+        SharedPreferences::getStringSet
+    )
 
     fun StringSetLiveData(default: Set<String>, key: String? = null): ReadOnlyProperty<Any, LiveData<Set<String>>> = NonNullPreferenceLiveDataProperty(
         sharedPreferences,
         key,
-        default
-    ) { k -> sharedPreferences.getStringSet(k, null) }
+        default,
+        SharedPreferences::getStringSet
+    )
+
+    fun StringSetFlow(key: String? = null): ReadOnlyProperty<Any, Flow<Set<String>?>> = NullablePreferenceFlowProperty(
+        sharedPreferences,
+        key,
+        setOf(),
+        SharedPreferences::getStringSet
+    )
+
+    fun StringSetFlow(default: Set<String>, key: String? = null): ReadOnlyProperty<Any, Flow<Set<String>>> = NonNullPreferenceFlowProperty(
+        sharedPreferences,
+        key,
+        default,
+        SharedPreferences::getStringSet
+    )
 
     // endregion
 

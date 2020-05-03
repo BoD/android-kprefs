@@ -25,6 +25,7 @@ package org.jraf.android.kprefs.sample.prefs
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 import org.jraf.android.kprefs.Key
 import org.jraf.android.kprefs.Prefs
 
@@ -34,6 +35,7 @@ class MainPrefs(context: Context) {
     var login: String? by prefs.String()
     var password: String? by prefs.String(Key(KEY_PASSWORD))
     val passwordLiveData: LiveData<String?> by prefs.StringLiveData(Key(KEY_PASSWORD))
+    val passwordFlow: Flow<String?> by prefs.StringFlow(Key(KEY_PASSWORD))
     var premium: Boolean by prefs.Boolean(false)
     val premiumLiveData: LiveData<Boolean> by prefs.BooleanLiveData(false)
     var age: Int? by prefs.Int()

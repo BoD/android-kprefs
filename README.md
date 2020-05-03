@@ -1,6 +1,6 @@
 # KPrefs: pref like a winner™!
 
-A very small library (~200 loc) for Android/Kotlin to remove
+A very small library (~400 loc) for Android/Kotlin to remove
 shared preferences boilerplate.
 
 _This is a much lighter, Kotlin specific, followup to my [Prefs lib](https://github.com/BoD/android-prefs)
@@ -13,7 +13,7 @@ Kotlin delegates based._
 ```groovy
 dependencies {
     /* ... */
-    implementation 'org.jraf:kprefs:1.1.0'
+    implementation 'org.jraf:kprefs:1.2.0'
 }
 ```
 _(The artifact is hosted on jcenter)_
@@ -36,6 +36,7 @@ Then declare your `val`s or `var`s using delegates on the `prefs` object:
 
     var password by prefs.String(Key(KEY_PASSWORD))
     val passwordLiveData by prefs.StringLiveData(Key(KEY_PASSWORD))
+    val passwordFlow by prefs.StringFlow(Key(KEY_PASSWORD))
 
     var premium by prefs.Boolean(false)
     var age by prefs.Int()
@@ -69,10 +70,15 @@ Simply use your class like this:
     // Put a preference
     mainPrefs.password = "p4Ssw0Rd"
     
-    // Observe a preference
+    // Observe a preference, with LiveData
     mainPrefs.passwordLiveData.observe(this, Observer {
         log("observed password=$it")
     })
+
+    // Observe a preference, with Flow
+    mainPrefs.passwordFlow.onEach {
+        Log.d(TAG, "observed password=$it")
+    }.launchIn(scope)
 ```
 
 You can also have a look at the [sample](sample/).

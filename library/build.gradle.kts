@@ -34,6 +34,7 @@ android {
 dependencies {
     implementation(kotlin("stdlib", Versions.KOTLIN))
     api("androidx.lifecycle:lifecycle-livedata:${Versions.ANDROIDX_LIFECYCLE_LIVEDATA}")
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.COROUTINES}")
 }
 
 afterEvaluate {
