@@ -63,7 +63,7 @@ afterEvaluate {
         setPublications("releaseMavenPublication")
         pkg(delegateClosureOf<PackageConfig> {
             repo = "JRAF"
-            name = description
+            name = "KPrefs"
             userOrg = "bod"
             setLicenses("Apache-2.0")
             vcsUrl = "https://github.com/BoD/android-kprefs"
