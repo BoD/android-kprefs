@@ -42,13 +42,14 @@ internal class NullablePreferenceProperty<T>(
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: T?) {
         val key = Prefs.getKey(property, key)
-        val editor = sharedPreferences.edit()
-        if (value == null) {
-            editor.remove(key)
-        } else {
-            editor.setter(key, value)
+        sharedPreferences.edit().apply {
+            if (value == null) {
+                remove(key)
+            } else {
+                setter(key, value)
+            }
+            apply()
         }
-        editor.apply()
     }
 }
 

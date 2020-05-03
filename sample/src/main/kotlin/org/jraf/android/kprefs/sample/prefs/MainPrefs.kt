@@ -24,17 +24,19 @@
 package org.jraf.android.kprefs.sample.prefs
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import org.jraf.android.kprefs.Key
 import org.jraf.android.kprefs.Prefs
 
 class MainPrefs(context: Context) {
     private val prefs = Prefs(context)
 
-    var login by prefs.String()
-    var password by prefs.String(Key(KEY_PASSWORD))
-    val passwordLiveData by prefs.StringLiveData(Key(KEY_PASSWORD))
-    var premium by prefs.Boolean(false)
-    var age by prefs.Int()
+    var login: String? by prefs.String()
+    var password: String? by prefs.String(Key(KEY_PASSWORD))
+    val passwordLiveData: LiveData<String?> by prefs.StringLiveData(Key(KEY_PASSWORD))
+    var premium: Boolean by prefs.Boolean(false)
+    val premiumLiveData: LiveData<Boolean> by prefs.BooleanLiveData(false)
+    var age: Int? by prefs.Int()
 
     companion object {
         private const val KEY_PASSWORD = "PASSWORD"

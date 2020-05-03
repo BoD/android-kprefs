@@ -44,6 +44,10 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "observed password=$it")
         })
 
+        mainPrefs.premiumLiveData.observe(this, Observer {
+            Log.d(TAG, "observed premium=$it")
+        })
+
         mainPrefs.login = "john"
         mainPrefs.password = "p4Ssw0Rd ${Date()}"
         mainPrefs.age = null

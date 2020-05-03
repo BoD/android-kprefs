@@ -33,6 +33,6 @@ class SettingsPrefs(context: Context) {
         fileMode = Context.MODE_PRIVATE
     )
 
-    var preferredColor by prefs.Int(0x44FF23)
-    var weekDays by prefs.StringSet(setOf("Friday", "Saturday"))
+    var preferredColor: Int by prefs.Int(0x44FF23)
+    var weekDays: Set<String> by prefs.StringSet(setOf("Friday", "Saturday"))
 }

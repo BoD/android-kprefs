@@ -1,18 +1,18 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven'
 apply plugin: 'kotlin-android'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
 
 group = 'org.jraf'
-ext.groupPath = group.replace('.', '/')
-ext.artifactId = 'kprefs'
-version = '1.1.0'
+version = '1.2.0'
+description = 'kprefs'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 28
+        targetSdkVersion 29
     }
 
     buildTypes {
@@ -27,19 +27,8 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.lifecycle:lifecycle-livedata:2.0.0'
-}
-
-// Use "./gradlew uploadArchives" to deploy the aar to your local maven repository
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: mavenLocal().getUrl())
-
-            pom.artifactId = artifactId
-        }
-    }
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$Versions.KOTLIN"
+    api 'androidx.lifecycle:lifecycle-livedata:2.2.0'
 }
 
 android.libraryVariants.all { variant ->
@@ -61,7 +50,7 @@ android.libraryVariants.all { variant ->
 android.libraryVariants.all { variant ->
     task("jar${variant.name.capitalize()}Javadoc", type: Jar, dependsOn: "generate${variant.name.capitalize()}Javadoc") {
         description "Generate a Javadoc jar for $variant.name."
-        classifier = 'javadoc'
+        archiveClassifier = 'javadoc'
         from buildDir.getPath() + '/docs/javadoc'
     }
 }
@@ -69,32 +58,41 @@ android.libraryVariants.all { variant ->
 android.libraryVariants.all { variant ->
     task("jar${variant.name.capitalize()}Sources", type: Jar) {
         description "Generate a Sources jar for $variant.name."
-        classifier = 'sources'
-        from variant.javaCompile.source
+        archiveClassifier = 'sources'
+        from variant.javaCompileProvider.get().source
     }
 }
 
-// Use "./gradlew install" to deploy the aar to your local maven repository, as well as the javadoc and the source jars
-// noinspection GroovyAssignabilityCheck
-task install(
-        group: 'install',
-        description: 'Make the library, generate a source jar, generate a javadoc jar, and copy everything to the local maven repository',
-        dependsOn: ['assembleRelease', 'uploadArchives', 'jarReleaseSources', 'jarReleaseJavadoc']) {
-    doLast {
-        // Copy the sources jar
-        println("Copying " + buildDir.getPath() + "/libs/library-${version}-sources.jar" + " to " + "${repositories.mavenLocal().getUrl()}/${groupPath}/${artifactId}/${version}" + "/${artifactId}-${version}-sources.jar")
-        copy {
-            from buildDir.getPath() + "/libs/library-${version}-sources.jar"
-            into "${repositories.mavenLocal().getUrl()}/${groupPath}/${artifactId}/${version}"
-            rename "library-${version}-sources.jar", "${artifactId}-${version}-sources.jar"
-        }
-
-        // Copy the javadoc jar
-        copy {
-            println("Copying " + buildDir.getPath() + "/libs/library-${version}-javadoc.jar" + " to " + "${repositories.mavenLocal().getUrl()}/${groupPath}/${artifactId}/${version}" + "/${artifactId}-${version}-javadoc.jar")
-            from buildDir.getPath() + "/libs/library-${version}-javadoc.jar"
-            into "${repositories.mavenLocal().getUrl()}/${groupPath}/${artifactId}/${version}"
-            rename "library-${version}-javadoc.jar", "${artifactId}-${version}-javadoc.jar"
+afterEvaluate {
+    publishing {
+        publications {
+            releaseMavenPublication(MavenPublication) {
+                from components.release
+                artifactId = description
+                artifact jarReleaseJavadoc
+                artifact jarReleaseSources
+            }
         }
     }
+
+    bintray {
+        user = System.getenv("USER")
+        key = System.getenv("KEY")
+        publications = ['releaseMavenPublication']
+        pkg {
+            repo = 'JRAF'
+            name = description
+            userOrg = 'bod'
+            licenses = ['Apache-2.0']
+            vcsUrl = 'https://github.com/BoD/android-kprefs'
+            version {
+                name = project.version
+            }
+        }
+        publish = true
+    }
 }
+
+// Use "./gradlew publishToMavenLocal" to deploy the artifacts to your local maven repository
+// Use "USER=<username> KEY=<key> ./gradlew publishToMavenLocal bintrayUpload" to deploy the artifacts to bintray
+// key can be found here: https://bintray.com/profile/edit and click on "API key"
