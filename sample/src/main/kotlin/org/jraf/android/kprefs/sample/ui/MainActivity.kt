@@ -33,31 +33,34 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.jraf.android.kprefs.sample.R
+import org.jraf.android.kprefs.sample.prefs.EncryptedPrefs
 import org.jraf.android.kprefs.sample.prefs.MainPrefs
 import org.jraf.android.kprefs.sample.prefs.SettingsPrefs
 import java.util.Date
+import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
     private val mainPrefs by lazy { MainPrefs(this) }
     private val settingsPrefs by lazy { SettingsPrefs(this) }
+    private val encryptedPrefs by lazy { EncryptedPrefs(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
-        mainPrefs.passwordLiveData.observe(this, Observer {
-            Log.d(TAG, "passwordLiveData=$it")
-        })
-
-        mainPrefs.premiumLiveData.observe(this, Observer {
-            Log.d(TAG, "premiumLiveData=$it")
-        })
-
-        mainPrefs.login = "john"
-        mainPrefs.password = "p4Ssw0Rd ${Date()}"
-        mainPrefs.age = null
-
         with(mainPrefs) {
+            passwordLiveData.observe(this@MainActivity, Observer {
+                Log.d(TAG, "passwordLiveData=$it")
+            })
+
+            premiumLiveData.observe(this@MainActivity, Observer {
+                Log.d(TAG, "premiumLiveData=$it")
+            })
+
+            login = "john"
+            password = "p4Ssw0Rd ${Date()}"
+            age = null
+
             Log.d(TAG, "login=$login")
             Log.d(TAG, "password=$password")
             Log.d(TAG, "age=$age")
@@ -66,7 +69,17 @@ class MainActivity : AppCompatActivity() {
 
         with(settingsPrefs) {
             Log.d(TAG, "preferredColor=$preferredColor")
+            preferredColor = Random.nextInt()
+            Log.d(TAG, "preferredColor=$preferredColor")
             Log.d(TAG, "weekDays=$weekDays")
+            weekDays = setOf("a", "b", "c")
+            Log.d(TAG, "weekDays=$weekDays")
+        }
+
+        with(encryptedPrefs) {
+            Log.d(TAG, "encryptedSecret=$encryptedSecret")
+            encryptedSecret = "new secret ${Date()}"
+            Log.d(TAG, "encryptedSecret=$encryptedSecret")
         }
 
         GlobalScope.launch {

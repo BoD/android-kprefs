@@ -34,16 +34,20 @@ import kotlin.reflect.KProperty
 
 class Key(val name: String)
 
-@Suppress("FunctionName", "unused")
+@Suppress("FunctionName", "unused", "MemberVisibilityCanBePrivate")
 class Prefs(
-    context: Context,
-    fileName: String? = null,
-    fileMode: Int = Context.MODE_PRIVATE
+    val sharedPreferences: SharedPreferences
 ) {
-    @Suppress("MemberVisibilityCanBePrivate")
-    val sharedPreferences: SharedPreferences =
-        if (fileName != null) context.getSharedPreferences(fileName, fileMode) else PreferenceManager.getDefaultSharedPreferences(context)
-
+    constructor(
+        context: Context,
+        fileName: String? = null,
+        fileMode: Int = Context.MODE_PRIVATE
+    ) : this(
+        if (fileName != null) context.getSharedPreferences(
+            fileName,
+            fileMode
+        ) else PreferenceManager.getDefaultSharedPreferences(context)
+    )
 
     // region Boolean
 

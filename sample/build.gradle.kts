@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId = "org.jraf.android.kprefs.sample"
-        minSdkVersion(19)
+        minSdkVersion(23)
         targetSdkVersion(29)
         versionCode = 1
         versionName = "1.0.0"
@@ -34,5 +34,6 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.1.0")
     implementation("androidx.core:core-ktx:1.2.0")
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
+    implementation("androidx.security:security-crypto:1.0.0-rc01")
     implementation(project(":library"))
 }

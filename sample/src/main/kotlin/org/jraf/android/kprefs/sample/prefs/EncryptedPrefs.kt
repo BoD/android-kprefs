@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2019-present Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2020-present Benoit 'BoD' Lubek (BoD@JRAF.org)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,15 +24,20 @@
 package org.jraf.android.kprefs.sample.prefs
 
 import android.content.Context
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKeys
 import org.jraf.android.kprefs.Prefs
 
-class SettingsPrefs(context: Context) {
-    private val prefs = Prefs(
+class EncryptedPrefs(context: Context) {
+    private val encryptedPrefs = EncryptedSharedPreferences.create(
+        "encrypted_prefs",
+        MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC),
         context,
-        fileName = "settings_prefs",
-        fileMode = Context.MODE_PRIVATE
+        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
 
-    var preferredColor: Int by prefs.Int(0x44FF23)
-    var weekDays: Set<String> by prefs.StringSet(setOf("Friday", "Saturday"))
+    private val prefs = Prefs(encryptedPrefs)
+
+    var encryptedSecret: String by prefs.String("s3cRE7")
 }

@@ -1,5 +1,5 @@
 object Versions {
-    const val GRADLE = "6.3"
+    const val GRADLE = "6.4"
     const val ANDROID_GRADLE_PLUGIN = "3.6.3"
     const val BEN_MANES_VERSIONS_PLUGIN = "0.28.0"
     const val BINTRAY_PUBLISH_PLUGIN = "1.8.5"

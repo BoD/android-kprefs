@@ -13,23 +13,31 @@ Kotlin delegates based._
 ```groovy
 dependencies {
     /* ... */
-    implementation 'org.jraf:kprefs:1.2.0'
+    implementation 'org.jraf:kprefs:1.3.0'
 }
 ```
 _(The artifact is hosted on jcenter)_
 
 ### 2/ Define your preferences
-Create a `Prefs` instance and pass it a `Context`.  Optionally pass it
-a `fileName`, and a `fileMode`.
+Create a `Prefs` instance and pass it a `Context`.  Optionally pass it a `fileName`, and a `fileMode`.
+
+You can also instead pass a `SharedPreferences` which is handy for instance when using the androidx security-crypto library.
 
 ```kotlin
-class MainPrefs(context: Context) {
-        private val prefs = Prefs(context)
-        
-        (...)
+    private val mainPrefs = Prefs(context)
+    
+    private val settingPrefs = Prefs(
+        context,
+        fileName = "settings_prefs",
+        fileMode = Context.MODE_PRIVATE
+    )
+
+    private val encryptedPrefs = Prefs(getEncryptedSharedPreferences())
+    
+    // (...)
 ```
 
-Then declare your `val`s or `var`s using delegates on the `prefs` object:
+Then declare your `val`s or `var`s using delegates on the `Prefs` instance:
 
 ```kotlin
     var login by prefs.String()
