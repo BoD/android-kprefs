@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.4.0 (2020-10-04)
+LiveData wrappers are now MutableLiveData.
+
 ## v1.3.0 (2020-05-08)
 Allow passing a SharedPreference to make the lib compatible with the androidx security-crypto library (and any other SharedPreference wrapper).
 

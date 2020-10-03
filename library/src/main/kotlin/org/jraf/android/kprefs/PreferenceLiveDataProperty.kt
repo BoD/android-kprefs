@@ -25,20 +25,21 @@ package org.jraf.android.kprefs
 
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import org.jraf.android.kprefs.Prefs.Companion.getKey
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-private class NonNullPreferenceLiveData<T>(
+private class NonNullPreferenceLiveData<T : Any>(
     private val sharedPreferences: SharedPreferences,
     private val key: String,
     private val default: T,
-    private val getter: SharedPreferences.(String, T) -> T?
-) : LiveData<T>() {
+    private val getter: SharedPreferences.(String, T) -> T?,
+    private val setter: SharedPreferences.Editor.(String, T) -> SharedPreferences.Editor
+) : MutableLiveData<T>() {
 
-    private val listener = OnSharedPreferenceChangeListener { _, _ ->
-        if (this.key == key) value = getPreferenceValue()
+    private val listener = OnSharedPreferenceChangeListener { _, key ->
+        if (this.key == key) super.setValue(getPreferenceValue())
     }
 
     private fun getPreferenceValue(): T {
@@ -48,11 +49,28 @@ private class NonNullPreferenceLiveData<T>(
     override fun onActive() {
         sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
         val preferenceValue = getPreferenceValue()
-        if (preferenceValue != value) value = preferenceValue
+        if (preferenceValue != value) super.setValue(preferenceValue)
     }
 
     override fun onInactive() {
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener)
+    }
+
+    override fun setValue(value: T) {
+        updateSharedPreference(value)
+        super.setValue(value)
+    }
+
+    override fun postValue(value: T) {
+        updateSharedPreference(value)
+        super.postValue(value)
+    }
+
+    private fun updateSharedPreference(value: T) {
+        sharedPreferences.edit().apply {
+            setter(key, value)
+            apply()
+        }
     }
 }
 
@@ -60,11 +78,12 @@ private class NullablePreferenceLiveData<T>(
     private val sharedPreferences: SharedPreferences,
     private val key: String,
     private val default: T,
-    private val getter: SharedPreferences.(String, T) -> T?
-) : LiveData<T?>() {
+    private val getter: SharedPreferences.(String, T) -> T?,
+    private val setter: SharedPreferences.Editor.(String, T) -> SharedPreferences.Editor
+) : MutableLiveData<T?>() {
 
-    private val listener = OnSharedPreferenceChangeListener { _, _ ->
-        if (this.key == key) value = getPreferenceValue()
+    private val listener = OnSharedPreferenceChangeListener { _, key ->
+        if (this.key == key) super.setValue(getPreferenceValue())
     }
 
     private fun getPreferenceValue(): T? {
@@ -74,22 +93,44 @@ private class NullablePreferenceLiveData<T>(
     override fun onActive() {
         sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
         val preferenceValue = getPreferenceValue()
-        if (preferenceValue != value) value = preferenceValue
+        if (preferenceValue != value) super.setValue(preferenceValue)
     }
 
     override fun onInactive() {
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener)
     }
+
+    override fun setValue(value: T?) {
+        updateSharedPreference(value)
+        super.setValue(value)
+    }
+
+    override fun postValue(value: T?) {
+        updateSharedPreference(value)
+        super.postValue(value)
+    }
+
+    private fun updateSharedPreference(value: T?) {
+        sharedPreferences.edit().apply {
+            if (value == null) {
+                remove(key)
+            } else {
+                setter(key, value)
+            }
+            apply()
+        }
+    }
 }
 
-internal class NonNullPreferenceLiveDataProperty<T>(
+internal class NonNullPreferenceLiveDataProperty<T : Any>(
     private val sharedPreferences: SharedPreferences,
     private val key: String?,
     private val default: T,
-    private val getter: SharedPreferences.(String, T) -> T?
-) : ReadOnlyProperty<Any, LiveData<T>> {
-    override fun getValue(thisRef: Any, property: KProperty<*>): LiveData<T> {
-        return NonNullPreferenceLiveData(sharedPreferences, getKey(property, key), default, getter)
+    private val getter: SharedPreferences.(String, T) -> T?,
+    private val setter: SharedPreferences.Editor.(String, T) -> SharedPreferences.Editor
+) : ReadOnlyProperty<Any, MutableLiveData<T>> {
+    override fun getValue(thisRef: Any, property: KProperty<*>): MutableLiveData<T> {
+        return NonNullPreferenceLiveData(sharedPreferences, getKey(property, key), default, getter, setter)
     }
 }
 
@@ -97,9 +138,10 @@ internal class NullablePreferenceLiveDataProperty<T>(
     private val sharedPreferences: SharedPreferences,
     private val key: String?,
     private val default: T,
-    private val getter: SharedPreferences.(String, T) -> T?
-) : ReadOnlyProperty<Any, LiveData<T?>> {
-    override fun getValue(thisRef: Any, property: KProperty<*>): LiveData<T?> {
-        return NullablePreferenceLiveData<T>(sharedPreferences, getKey(property, key), default, getter)
+    private val getter: SharedPreferences.(String, T) -> T?,
+    private val setter: SharedPreferences.Editor.(String, T) -> SharedPreferences.Editor
+) : ReadOnlyProperty<Any, MutableLiveData<T?>> {
+    override fun getValue(thisRef: Any, property: KProperty<*>): MutableLiveData<T?> {
+        return NullablePreferenceLiveData(sharedPreferences, getKey(property, key), default, getter, setter)
     }
 }

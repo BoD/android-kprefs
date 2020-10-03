@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "org.jraf"
-version = "1.3.0"
+version = "1.4.0"
 description = "kprefs"
 
 android {

@@ -65,6 +65,12 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "password=$password")
             Log.d(TAG, "age=$age")
             Log.d(TAG, "premium=$premium")
+            premiumLiveData.value = true
+            Log.d(TAG, "premium=$premium")
+            premiumLiveData.value = false
+            Log.d(TAG, "premium=$premium")
+            premiumLiveData.postValue(true)
+            Log.d(TAG, "premium=$premium")
         }
 
         with(settingsPrefs) {
