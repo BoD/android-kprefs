@@ -9,15 +9,15 @@ plugins {
 }
 
 group = "org.jraf"
-version = "1.4.0"
+version = "1.5.0"
 description = "kprefs"
 
 android {
-    compileSdkVersion(29)
+    compileSdkVersion(30)
 
     defaultConfig {
         minSdkVersion(19)
-        targetSdkVersion(29)
+        targetSdkVersion(30)
     }
 
     buildTypes {

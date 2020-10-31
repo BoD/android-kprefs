@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.5.0 (2020-10-31)
+- Update dependencies to latest versions
+
 ## v1.4.0 (2020-10-04)
 LiveData wrappers are now MutableLiveData.
 

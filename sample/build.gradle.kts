@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(29)
+    compileSdkVersion(30)
 
     defaultConfig {
         applicationId = "org.jraf.android.kprefs.sample"
         minSdkVersion(23)
-        targetSdkVersion(29)
+        targetSdkVersion(30)
         versionCode = 1
         versionName = "1.0.0"
     }
@@ -31,9 +31,9 @@ android {
 
 dependencies {
     implementation(kotlin("stdlib", Versions.KOTLIN))
-    implementation("androidx.appcompat:appcompat:1.1.0")
-    implementation("androidx.core:core-ktx:1.2.0")
-    implementation("androidx.constraintlayout:constraintlayout:1.1.3")
-    implementation("androidx.security:security-crypto:1.0.0-rc01")
+    implementation("androidx.appcompat:appcompat:1.2.0")
+    implementation("androidx.core:core-ktx:1.3.2")
+    implementation("androidx.constraintlayout:constraintlayout:2.0.4")
+    implementation("androidx.security:security-crypto:1.1.0-alpha02")
     implementation(project(":library"))
 }
