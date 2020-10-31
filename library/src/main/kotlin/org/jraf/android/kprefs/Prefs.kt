@@ -51,48 +51,48 @@ class Prefs(
 
     // region Boolean
 
-    fun Boolean(key: String? = null): ReadWriteProperty<Any, Boolean?> = NullablePreferenceProperty(
+    fun Boolean(key: Key? = null): ReadWriteProperty<Any, Boolean?> = NullablePreferenceProperty(
         sharedPreferences,
-        key,
+        key?.name,
         false,
         SharedPreferences::getBoolean,
         SharedPreferences.Editor::putBoolean
     )
 
-    fun Boolean(default: Boolean, key: String? = null): ReadWriteProperty<Any, Boolean> = NonNullPreferenceProperty(
+    fun Boolean(default: Boolean, key: Key? = null): ReadWriteProperty<Any, Boolean> = NonNullPreferenceProperty(
         sharedPreferences,
-        key,
+        key?.name,
         default,
         SharedPreferences::getBoolean,
         SharedPreferences.Editor::putBoolean
     )
 
-    fun BooleanLiveData(key: String? = null): ReadOnlyProperty<Any, MutableLiveData<Boolean?>> = NullablePreferenceLiveDataProperty(
+    fun BooleanLiveData(key: Key? = null): ReadOnlyProperty<Any, MutableLiveData<Boolean?>> = NullablePreferenceLiveDataProperty(
         sharedPreferences,
-        key,
+        key?.name,
         false,
         SharedPreferences::getBoolean,
         SharedPreferences.Editor::putBoolean
     )
 
-    fun BooleanLiveData(default: Boolean, key: String? = null): ReadOnlyProperty<Any, MutableLiveData<Boolean>> = NonNullPreferenceLiveDataProperty(
+    fun BooleanLiveData(default: Boolean, key: Key? = null): ReadOnlyProperty<Any, MutableLiveData<Boolean>> = NonNullPreferenceLiveDataProperty(
         sharedPreferences,
-        key,
+        key?.name,
         default,
         SharedPreferences::getBoolean,
         SharedPreferences.Editor::putBoolean
     )
 
-    fun BooleanFlow(key: String? = null): ReadOnlyProperty<Any, Flow<Boolean?>> = NullablePreferenceFlowProperty(
+    fun BooleanFlow(key: Key? = null): ReadOnlyProperty<Any, Flow<Boolean?>> = NullablePreferenceFlowProperty(
         sharedPreferences,
-        key,
+        key?.name,
         false,
         SharedPreferences::getBoolean
     )
 
-    fun BooleanFlow(default: Boolean, key: String? = null): ReadOnlyProperty<Any, Flow<Boolean>> = NonNullPreferenceFlowProperty(
+    fun BooleanFlow(default: Boolean, key: Key? = null): ReadOnlyProperty<Any, Flow<Boolean>> = NonNullPreferenceFlowProperty(
         sharedPreferences,
-        key,
+        key?.name,
         default,
         SharedPreferences::getBoolean
     )
@@ -153,50 +153,50 @@ class Prefs(
 
     // region Int
 
-    fun Int(key: String? = null): ReadWriteProperty<Any, Int?> = NullablePreferenceProperty(
+    fun Int(key: Key? = null): ReadWriteProperty<Any, Int?> = NullablePreferenceProperty(
         sharedPreferences,
-        key,
+        key?.name,
         0,
         SharedPreferences::getInt,
         SharedPreferences.Editor::putInt
     )
 
-    fun Int(default: Int, key: String? = null): ReadWriteProperty<Any, Int> = NonNullPreferenceProperty(
+    fun Int(default: Int, key: Key? = null): ReadWriteProperty<Any, Int> = NonNullPreferenceProperty(
         sharedPreferences,
-        key,
+        key?.name,
         default,
         SharedPreferences::getInt,
         SharedPreferences.Editor::putInt
     )
 
-    fun IntLiveData(key: String? = null): ReadOnlyProperty<Any, MutableLiveData<Int?>> = NullablePreferenceLiveDataProperty(
+    fun IntLiveData(key: Key? = null): ReadOnlyProperty<Any, MutableLiveData<Int?>> = NullablePreferenceLiveDataProperty(
         sharedPreferences,
-        key,
+        key?.name,
         0,
         SharedPreferences::getInt,
         SharedPreferences.Editor::putInt
     )
 
 
-    fun IntLiveData(default: Int, key: String? = null): ReadOnlyProperty<Any, MutableLiveData<Int>> = NonNullPreferenceLiveDataProperty(
+    fun IntLiveData(default: Int, key: Key? = null): ReadOnlyProperty<Any, MutableLiveData<Int>> = NonNullPreferenceLiveDataProperty(
         sharedPreferences,
-        key,
+        key?.name,
         default,
         SharedPreferences::getInt,
         SharedPreferences.Editor::putInt
     )
 
-    fun IntFlow(key: String? = null): ReadOnlyProperty<Any, Flow<Int?>> = NullablePreferenceFlowProperty(
+    fun IntFlow(key: Key? = null): ReadOnlyProperty<Any, Flow<Int?>> = NullablePreferenceFlowProperty(
         sharedPreferences,
-        key,
+        key?.name,
         0,
         SharedPreferences::getInt
     )
 
 
-    fun IntFlow(default: Int, key: String? = null): ReadOnlyProperty<Any, Flow<Int>> = NonNullPreferenceFlowProperty(
+    fun IntFlow(default: Int, key: Key? = null): ReadOnlyProperty<Any, Flow<Int>> = NonNullPreferenceFlowProperty(
         sharedPreferences,
-        key,
+        key?.name,
         default,
         SharedPreferences::getInt
     )
@@ -206,48 +206,48 @@ class Prefs(
 
     // region Float
 
-    fun Float(key: String? = null): ReadWriteProperty<Any, Float?> = NullablePreferenceProperty(
+    fun Float(key: Key? = null): ReadWriteProperty<Any, Float?> = NullablePreferenceProperty(
         sharedPreferences,
-        key,
+        key?.name,
         0F,
         SharedPreferences::getFloat,
         SharedPreferences.Editor::putFloat
     )
 
-    fun Float(default: Float, key: String? = null): ReadWriteProperty<Any, Float> = NonNullPreferenceProperty(
+    fun Float(default: Float, key: Key? = null): ReadWriteProperty<Any, Float> = NonNullPreferenceProperty(
         sharedPreferences,
-        key,
+        key?.name,
         default,
         SharedPreferences::getFloat,
         SharedPreferences.Editor::putFloat
     )
 
-    fun FloatLiveData(key: String? = null): ReadOnlyProperty<Any, MutableLiveData<Float?>> = NullablePreferenceLiveDataProperty(
+    fun FloatLiveData(key: Key? = null): ReadOnlyProperty<Any, MutableLiveData<Float?>> = NullablePreferenceLiveDataProperty(
         sharedPreferences,
-        key,
+        key?.name,
         0F,
         SharedPreferences::getFloat,
         SharedPreferences.Editor::putFloat
     )
 
-    fun FloatLiveData(default: Float, key: String? = null): ReadOnlyProperty<Any, MutableLiveData<Float>> = NonNullPreferenceLiveDataProperty(
+    fun FloatLiveData(default: Float, key: Key? = null): ReadOnlyProperty<Any, MutableLiveData<Float>> = NonNullPreferenceLiveDataProperty(
         sharedPreferences,
-        key,
+        key?.name,
         default,
         SharedPreferences::getFloat,
         SharedPreferences.Editor::putFloat
     )
 
-    fun FloatFlow(key: String? = null): ReadOnlyProperty<Any, Flow<Float?>> = NullablePreferenceFlowProperty(
+    fun FloatFlow(key: Key? = null): ReadOnlyProperty<Any, Flow<Float?>> = NullablePreferenceFlowProperty(
         sharedPreferences,
-        key,
+        key?.name,
         0F,
         SharedPreferences::getFloat
     )
 
-    fun FloatFlow(default: Float, key: String? = null): ReadOnlyProperty<Any, Flow<Float>> = NonNullPreferenceFlowProperty(
+    fun FloatFlow(default: Float, key: Key? = null): ReadOnlyProperty<Any, Flow<Float>> = NonNullPreferenceFlowProperty(
         sharedPreferences,
-        key,
+        key?.name,
         default,
         SharedPreferences::getFloat
     )
@@ -257,50 +257,50 @@ class Prefs(
 
     // region Long
 
-    fun Long(key: String? = null): ReadWriteProperty<Any, Long?> = NullablePreferenceProperty(
+    fun Long(key: Key? = null): ReadWriteProperty<Any, Long?> = NullablePreferenceProperty(
         sharedPreferences,
-        key,
+        key?.name,
         0,
         SharedPreferences::getLong,
         SharedPreferences.Editor::putLong
     )
 
-    fun Long(default: Long, key: String? = null): ReadWriteProperty<Any, Long> = NonNullPreferenceProperty(
+    fun Long(default: Long, key: Key? = null): ReadWriteProperty<Any, Long> = NonNullPreferenceProperty(
         sharedPreferences,
-        key,
+        key?.name,
         default,
         SharedPreferences::getLong,
         SharedPreferences.Editor::putLong
     )
 
-    fun LongLiveData(key: String? = null): ReadOnlyProperty<Any, MutableLiveData<Long?>> = NullablePreferenceLiveDataProperty(
+    fun LongLiveData(key: Key? = null): ReadOnlyProperty<Any, MutableLiveData<Long?>> = NullablePreferenceLiveDataProperty(
         sharedPreferences,
-        key,
+        key?.name,
         0,
         SharedPreferences::getLong,
         SharedPreferences.Editor::putLong
     )
 
 
-    fun LongLiveData(default: Long, key: String? = null): ReadOnlyProperty<Any, MutableLiveData<Long>> = NonNullPreferenceLiveDataProperty(
+    fun LongLiveData(default: Long, key: Key? = null): ReadOnlyProperty<Any, MutableLiveData<Long>> = NonNullPreferenceLiveDataProperty(
         sharedPreferences,
-        key,
+        key?.name,
         default,
         SharedPreferences::getLong,
         SharedPreferences.Editor::putLong
     )
 
-    fun LongFlow(key: String? = null): ReadOnlyProperty<Any, Flow<Long?>> = NullablePreferenceFlowProperty(
+    fun LongFlow(key: Key? = null): ReadOnlyProperty<Any, Flow<Long?>> = NullablePreferenceFlowProperty(
         sharedPreferences,
-        key,
+        key?.name,
         0,
         SharedPreferences::getLong
     )
 
 
-    fun LongFlow(default: Long, key: String? = null): ReadOnlyProperty<Any, Flow<Long>> = NonNullPreferenceFlowProperty(
+    fun LongFlow(default: Long, key: Key? = null): ReadOnlyProperty<Any, Flow<Long>> = NonNullPreferenceFlowProperty(
         sharedPreferences,
-        key,
+        key?.name,
         default,
         SharedPreferences::getLong
     )
@@ -310,48 +310,48 @@ class Prefs(
 
     // region Set<String>
 
-    fun StringSet(key: String? = null): ReadWriteProperty<Any, Set<String>?> = NullablePreferenceProperty(
+    fun StringSet(key: Key? = null): ReadWriteProperty<Any, Set<String>?> = NullablePreferenceProperty(
         sharedPreferences,
-        key,
+        key?.name,
         setOf(),
         SharedPreferences::getStringSet,
         SharedPreferences.Editor::putStringSet
     )
 
-    fun StringSet(default: Set<String>, key: String? = null): ReadWriteProperty<Any, Set<String>> = NonNullPreferenceProperty(
+    fun StringSet(default: Set<String>, key: Key? = null): ReadWriteProperty<Any, Set<String>> = NonNullPreferenceProperty(
         sharedPreferences,
-        key,
+        key?.name,
         default,
         { k, defValue -> getStringSet(k, defValue)!! },
         SharedPreferences.Editor::putStringSet
     )
 
-    fun StringSetLiveData(key: String? = null): ReadOnlyProperty<Any, MutableLiveData<Set<String>?>> = NullablePreferenceLiveDataProperty(
+    fun StringSetLiveData(key: Key? = null): ReadOnlyProperty<Any, MutableLiveData<Set<String>?>> = NullablePreferenceLiveDataProperty(
         sharedPreferences,
-        key,
+        key?.name,
         setOf(),
         SharedPreferences::getStringSet,
         SharedPreferences.Editor::putStringSet
     )
 
-    fun StringSetLiveData(default: Set<String>, key: String? = null): ReadOnlyProperty<Any, MutableLiveData<Set<String>>> = NonNullPreferenceLiveDataProperty(
+    fun StringSetLiveData(default: Set<String>, key: Key? = null): ReadOnlyProperty<Any, MutableLiveData<Set<String>>> = NonNullPreferenceLiveDataProperty(
         sharedPreferences,
-        key,
+        key?.name,
         default,
         SharedPreferences::getStringSet,
         SharedPreferences.Editor::putStringSet
     )
 
-    fun StringSetFlow(key: String? = null): ReadOnlyProperty<Any, Flow<Set<String>?>> = NullablePreferenceFlowProperty(
+    fun StringSetFlow(key: Key? = null): ReadOnlyProperty<Any, Flow<Set<String>?>> = NullablePreferenceFlowProperty(
         sharedPreferences,
-        key,
+        key?.name,
         setOf(),
         SharedPreferences::getStringSet
     )
 
-    fun StringSetFlow(default: Set<String>, key: String? = null): ReadOnlyProperty<Any, Flow<Set<String>>> = NonNullPreferenceFlowProperty(
+    fun StringSetFlow(default: Set<String>, key: Key? = null): ReadOnlyProperty<Any, Flow<Set<String>>> = NonNullPreferenceFlowProperty(
         sharedPreferences,
-        key,
+        key?.name,
         default,
         SharedPreferences::getStringSet
     )

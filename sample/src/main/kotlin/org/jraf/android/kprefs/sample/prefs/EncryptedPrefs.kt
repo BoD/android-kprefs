@@ -25,14 +25,14 @@ package org.jraf.android.kprefs.sample.prefs
 
 import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKeys
+import androidx.security.crypto.MasterKey
 import org.jraf.android.kprefs.Prefs
 
 class EncryptedPrefs(context: Context) {
     private val encryptedPrefs = EncryptedSharedPreferences.create(
-        "encrypted_prefs",
-        MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC),
         context,
+        "encrypted_prefs",
+        MasterKey.Builder(context).setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build(),
         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )

@@ -1,6 +1,6 @@
 # KPrefs: pref like a winner™!
 
-A very small library (~400 loc) for Android/Kotlin to remove
+A very small library (~400 loc) for Android/Kotlin to reduce
 shared preferences boilerplate.
 
 _This is a much lighter, Kotlin specific, followup to my [Prefs lib](https://github.com/BoD/android-prefs)
@@ -13,7 +13,7 @@ Kotlin delegates based._
 ```groovy
 dependencies {
     /* ... */
-    implementation 'org.jraf:kprefs:1.4.0'
+    implementation 'org.jraf:kprefs:1.5.0'
 }
 ```
 _(The artifact is hosted on jcenter)_
@@ -60,11 +60,17 @@ Currently, the available types are:
 - String
 - StringSet
 
+And they can be exposed as:
+- Raw type
+- `MutableLiveData`
+- `Flow`
+
 👉 If you pass a `default` value, the attribute type will be non nullable.<br>
 In the example above, `age` is `Int?` whereas `preferredColor` is `Int`.
 
 👉 Optionally pass a `key` parameter, which will be used
-to store the preference.  By default the attribute name is used.
+to store the preference (useful when migrating from already used preferences).
+By default the attribute name is used.
 
 ### 3/ Be a winner!
 Simply use your class like this:
@@ -79,9 +85,12 @@ Simply use your class like this:
     mainPrefs.password = "p4Ssw0Rd"
     
     // Observe a preference, with LiveData
-    mainPrefs.passwordLiveData.observe(this, Observer {
+    mainPrefs.passwordLiveData.observe(this) {
         log("observed password=$it")
-    })
+    }
+
+    // Update a preference, with LiveData
+    mainPrefs.passwordLiveData.value = "qwerty"
 
     // Observe a preference, with Flow
     mainPrefs.passwordFlow.onEach {
