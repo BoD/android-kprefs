@@ -26,7 +26,6 @@ package org.jraf.android.kprefs.sample.ui
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
@@ -49,13 +48,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
 
         with(mainPrefs) {
-            passwordLiveData.observe(this@MainActivity, Observer {
+            passwordLiveData.observe(this@MainActivity) {
                 Log.d(TAG, "passwordLiveData=$it")
-            })
+            }
 
-            premiumLiveData.observe(this@MainActivity, Observer {
+            premiumLiveData.observe(this@MainActivity) {
                 Log.d(TAG, "premiumLiveData=$it")
-            })
+            }
 
             login = "john"
             password = "p4Ssw0Rd ${Date()}"
@@ -97,6 +96,19 @@ class MainActivity : AppCompatActivity() {
             mainPrefs.password = "p4Ssw0Rd ${Date()}"
             delay(1000)
             mainPrefs.password = "p4Ssw0Rd ${Date()}"
+        }
+
+        GlobalScope.launch {
+            mainPrefs.premiumFlow.onEach {
+                Log.d(TAG, "premiumFlow=$it")
+            }.launchIn(this)
+
+            delay(1200)
+            mainPrefs.premiumFlow.value = false
+            delay(1200)
+            mainPrefs.premiumFlow.value = true
+            delay(1200)
+            mainPrefs.premiumFlow.value = false
         }
     }
 

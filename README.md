@@ -13,7 +13,7 @@ Kotlin delegates based._
 ```groovy
 dependencies {
     /* ... */
-    implementation 'org.jraf:kprefs:1.5.0'
+    implementation 'org.jraf:kprefs:1.6.0'
 }
 ```
 _(The artifact is hosted on jcenter)_
@@ -63,7 +63,7 @@ Currently, the available types are:
 And they can be exposed as:
 - Raw type
 - `MutableLiveData`
-- `Flow`
+- `MutableStateFlow`
 
 👉 If you pass a `default` value, the attribute type will be non nullable.<br>
 In the example above, `age` is `Int?` whereas `preferredColor` is `Int`.
@@ -96,6 +96,9 @@ Simply use your class like this:
     mainPrefs.passwordFlow.onEach {
         Log.d(TAG, "observed password=$it")
     }.launchIn(scope)
+
+    // Update a preference, with Flow
+    mainPrefs.passwordFlow.value = "zxcvbn"
 ```
 
 You can also have a look at the [sample](sample/).

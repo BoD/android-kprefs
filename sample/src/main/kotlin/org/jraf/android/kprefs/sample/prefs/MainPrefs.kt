@@ -26,6 +26,7 @@ package org.jraf.android.kprefs.sample.prefs
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.jraf.android.kprefs.Key
 import org.jraf.android.kprefs.Prefs
 
@@ -36,11 +37,16 @@ class MainPrefs(context: Context) {
     var password: String? by prefs.String(Key(KEY_PASSWORD))
     val passwordLiveData: MutableLiveData<String?> by prefs.StringLiveData(Key(KEY_PASSWORD))
     val passwordFlow: Flow<String?> by prefs.StringFlow(Key(KEY_PASSWORD))
-    var premium: Boolean by prefs.Boolean(false)
-    val premiumLiveData: MutableLiveData<Boolean> by prefs.BooleanLiveData(false)
+
+    var premium: Boolean by prefs.Boolean(false, Key(KEY_PREMIUM))
+    val premiumLiveData: MutableLiveData<Boolean> by prefs.BooleanLiveData(false, Key(KEY_PREMIUM))
+    val premiumFlow: MutableStateFlow<Boolean> by prefs.BooleanFlow(false, Key(KEY_PREMIUM))
+
     var age: Int? by prefs.Int()
 
     companion object {
         private const val KEY_PASSWORD = "PASSWORD"
+        private const val KEY_PREMIUM = "PREMIUM"
+
     }
 }

@@ -28,6 +28,7 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
@@ -87,14 +88,16 @@ class Prefs(
         sharedPreferences,
         key?.name,
         false,
-        SharedPreferences::getBoolean
+        SharedPreferences::getBoolean,
+        SharedPreferences.Editor::putBoolean
     )
 
-    fun BooleanFlow(default: Boolean, key: Key? = null): ReadOnlyProperty<Any, Flow<Boolean>> = NonNullPreferenceFlowProperty(
+    fun BooleanFlow(default: Boolean, key: Key? = null): ReadOnlyProperty<Any, MutableStateFlow<Boolean>> = NonNullPreferenceFlowProperty(
         sharedPreferences,
         key?.name,
         default,
-        SharedPreferences::getBoolean
+        SharedPreferences::getBoolean,
+        SharedPreferences.Editor::putBoolean
     )
 
     // endregion
@@ -138,14 +141,16 @@ class Prefs(
         sharedPreferences,
         key?.name,
         "",
-        SharedPreferences::getString
+        SharedPreferences::getString,
+        SharedPreferences.Editor::putString
     )
 
-    fun StringFlow(default: String, key: Key? = null): ReadOnlyProperty<Any, Flow<String>> = NonNullPreferenceFlowProperty(
+    fun StringFlow(default: String, key: Key? = null): ReadOnlyProperty<Any, MutableStateFlow<String>> = NonNullPreferenceFlowProperty(
         sharedPreferences,
         key?.name,
         default,
-        SharedPreferences::getString
+        SharedPreferences::getString,
+        SharedPreferences.Editor::putString
     )
 
     // endregion
@@ -190,15 +195,17 @@ class Prefs(
         sharedPreferences,
         key?.name,
         0,
-        SharedPreferences::getInt
+        SharedPreferences::getInt,
+        SharedPreferences.Editor::putInt
     )
 
 
-    fun IntFlow(default: Int, key: Key? = null): ReadOnlyProperty<Any, Flow<Int>> = NonNullPreferenceFlowProperty(
+    fun IntFlow(default: Int, key: Key? = null): ReadOnlyProperty<Any, MutableStateFlow<Int>> = NonNullPreferenceFlowProperty(
         sharedPreferences,
         key?.name,
         default,
-        SharedPreferences::getInt
+        SharedPreferences::getInt,
+        SharedPreferences.Editor::putInt
     )
 
     // endregion
@@ -242,14 +249,16 @@ class Prefs(
         sharedPreferences,
         key?.name,
         0F,
-        SharedPreferences::getFloat
+        SharedPreferences::getFloat,
+        SharedPreferences.Editor::putFloat
     )
 
-    fun FloatFlow(default: Float, key: Key? = null): ReadOnlyProperty<Any, Flow<Float>> = NonNullPreferenceFlowProperty(
+    fun FloatFlow(default: Float, key: Key? = null): ReadOnlyProperty<Any, MutableStateFlow<Float>> = NonNullPreferenceFlowProperty(
         sharedPreferences,
         key?.name,
         default,
-        SharedPreferences::getFloat
+        SharedPreferences::getFloat,
+        SharedPreferences.Editor::putFloat
     )
 
     // endregion
@@ -294,15 +303,17 @@ class Prefs(
         sharedPreferences,
         key?.name,
         0,
-        SharedPreferences::getLong
+        SharedPreferences::getLong,
+        SharedPreferences.Editor::putLong
     )
 
 
-    fun LongFlow(default: Long, key: Key? = null): ReadOnlyProperty<Any, Flow<Long>> = NonNullPreferenceFlowProperty(
+    fun LongFlow(default: Long, key: Key? = null): ReadOnlyProperty<Any, MutableStateFlow<Long>> = NonNullPreferenceFlowProperty(
         sharedPreferences,
         key?.name,
         default,
-        SharedPreferences::getLong
+        SharedPreferences::getLong,
+        SharedPreferences.Editor::putLong
     )
 
     // endregion
@@ -346,14 +357,16 @@ class Prefs(
         sharedPreferences,
         key?.name,
         setOf(),
-        SharedPreferences::getStringSet
+        SharedPreferences::getStringSet,
+        SharedPreferences.Editor::putStringSet
     )
 
-    fun StringSetFlow(default: Set<String>, key: Key? = null): ReadOnlyProperty<Any, Flow<Set<String>>> = NonNullPreferenceFlowProperty(
+    fun StringSetFlow(default: Set<String>, key: Key? = null): ReadOnlyProperty<Any, MutableStateFlow<Set<String>>> = NonNullPreferenceFlowProperty(
         sharedPreferences,
         key?.name,
         default,
-        SharedPreferences::getStringSet
+        SharedPreferences::getStringSet,
+        SharedPreferences.Editor::putStringSet
     )
 
     // endregion
