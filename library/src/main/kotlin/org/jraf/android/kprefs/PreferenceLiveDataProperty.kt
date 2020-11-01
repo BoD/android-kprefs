@@ -84,6 +84,11 @@ private class NullablePreferenceLiveData<T>(
         if (this.key == key) super.setValue(getPreferenceValue())
     }
 
+    init {
+        // Needed to ensure observers are notified even if the initial value of the pref is null
+        super.setValue(getPreferenceValue())
+    }
+
     private fun getPreferenceValue(): T? {
         return if (!sharedPreferences.contains(key)) null else sharedPreferences.getter(this.key, default)
     }
