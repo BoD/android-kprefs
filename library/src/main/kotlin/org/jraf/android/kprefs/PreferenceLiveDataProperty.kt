@@ -58,12 +58,10 @@ private class NonNullPreferenceLiveData<T : Any>(
 
     override fun setValue(value: T) {
         updateSharedPreference(value)
-        super.setValue(value)
     }
 
     override fun postValue(value: T) {
         updateSharedPreference(value)
-        super.postValue(value)
     }
 
     private fun updateSharedPreference(value: T) {
@@ -102,12 +100,10 @@ private class NullablePreferenceLiveData<T>(
 
     override fun setValue(value: T?) {
         updateSharedPreference(value)
-        super.setValue(value)
     }
 
     override fun postValue(value: T?) {
         updateSharedPreference(value)
-        super.postValue(value)
     }
 
     private fun updateSharedPreference(value: T?) {
