@@ -130,8 +130,13 @@ internal class NonNullPreferenceLiveDataProperty<T : Any>(
     private val getter: SharedPreferences.(String, T) -> T?,
     private val setter: SharedPreferences.Editor.(String, T) -> SharedPreferences.Editor
 ) : ReadOnlyProperty<Any, MutableLiveData<T>> {
+    private var value: MutableLiveData<T>? = null
+
     override fun getValue(thisRef: Any, property: KProperty<*>): MutableLiveData<T> {
-        return NonNullPreferenceLiveData(sharedPreferences, getKey(property, key), default, getter, setter)
+        if (value == null) {
+            value = NonNullPreferenceLiveData(sharedPreferences, getKey(property, key), default, getter, setter)
+        }
+        return value!!
     }
 }
 
@@ -142,7 +147,12 @@ internal class NullablePreferenceLiveDataProperty<T>(
     private val getter: SharedPreferences.(String, T) -> T?,
     private val setter: SharedPreferences.Editor.(String, T) -> SharedPreferences.Editor
 ) : ReadOnlyProperty<Any, MutableLiveData<T?>> {
+    private var value: MutableLiveData<T?>? = null
+
     override fun getValue(thisRef: Any, property: KProperty<*>): MutableLiveData<T?> {
-        return NullablePreferenceLiveData(sharedPreferences, getKey(property, key), default, getter, setter)
+        if (value == null) {
+            value = NullablePreferenceLiveData(sharedPreferences, getKey(property, key), default, getter, setter)
+        }
+        return value!!
     }
 }

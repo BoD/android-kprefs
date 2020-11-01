@@ -149,8 +149,13 @@ internal class NonNullPreferenceFlowProperty<T : Any>(
     private val getter: SharedPreferences.(String, T) -> T?,
     private val setter: SharedPreferences.Editor.(String, T) -> SharedPreferences.Editor
 ) : ReadOnlyProperty<Any, MutableStateFlow<T>> {
+    private var value: MutableStateFlow<T>? = null
+
     override fun getValue(thisRef: Any, property: KProperty<*>): MutableStateFlow<T> {
-        return NonNullPreferenceFlow(sharedPreferences, getKey(property, key), default, getter, setter)
+        if (value == null) {
+            value = NonNullPreferenceFlow(sharedPreferences, getKey(property, key), default, getter, setter)
+        }
+        return value!!
     }
 }
 
@@ -161,7 +166,11 @@ internal class NullablePreferenceFlowProperty<T>(
     private val getter: SharedPreferences.(String, T) -> T?,
     private val setter: SharedPreferences.Editor.(String, T) -> SharedPreferences.Editor
 ) : ReadOnlyProperty<Any, MutableStateFlow<T?>> {
+    private var value: MutableStateFlow<T?>? = null
     override fun getValue(thisRef: Any, property: KProperty<*>): MutableStateFlow<T?> {
-        return NullablePreferenceFlow(sharedPreferences, getKey(property, key), default, getter, setter)
+        if (value == null) {
+            value = NullablePreferenceFlow(sharedPreferences, getKey(property, key), default, getter, setter)
+        }
+        return value!!
     }
 }
