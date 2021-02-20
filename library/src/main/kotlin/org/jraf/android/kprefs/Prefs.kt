@@ -27,7 +27,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
@@ -84,7 +83,7 @@ class Prefs(
         SharedPreferences.Editor::putBoolean
     )
 
-    fun BooleanFlow(key: Key? = null): ReadOnlyProperty<Any, Flow<Boolean?>> = NullablePreferenceFlowProperty(
+    fun BooleanFlow(key: Key? = null): ReadOnlyProperty<Any, MutableStateFlow<Boolean?>> = NullablePreferenceFlowProperty(
         sharedPreferences,
         key?.name,
         false,
@@ -137,7 +136,7 @@ class Prefs(
         SharedPreferences.Editor::putString
     )
 
-    fun StringFlow(key: Key? = null): ReadOnlyProperty<Any, Flow<String?>> = NullablePreferenceFlowProperty(
+    fun StringFlow(key: Key? = null): ReadOnlyProperty<Any, MutableStateFlow<String?>> = NullablePreferenceFlowProperty(
         sharedPreferences,
         key?.name,
         "",
@@ -191,7 +190,7 @@ class Prefs(
         SharedPreferences.Editor::putInt
     )
 
-    fun IntFlow(key: Key? = null): ReadOnlyProperty<Any, Flow<Int?>> = NullablePreferenceFlowProperty(
+    fun IntFlow(key: Key? = null): ReadOnlyProperty<Any, MutableStateFlow<Int?>> = NullablePreferenceFlowProperty(
         sharedPreferences,
         key?.name,
         0,
@@ -245,7 +244,7 @@ class Prefs(
         SharedPreferences.Editor::putFloat
     )
 
-    fun FloatFlow(key: Key? = null): ReadOnlyProperty<Any, Flow<Float?>> = NullablePreferenceFlowProperty(
+    fun FloatFlow(key: Key? = null): ReadOnlyProperty<Any, MutableStateFlow<Float?>> = NullablePreferenceFlowProperty(
         sharedPreferences,
         key?.name,
         0F,
@@ -299,7 +298,7 @@ class Prefs(
         SharedPreferences.Editor::putLong
     )
 
-    fun LongFlow(key: Key? = null): ReadOnlyProperty<Any, Flow<Long?>> = NullablePreferenceFlowProperty(
+    fun LongFlow(key: Key? = null): ReadOnlyProperty<Any, MutableStateFlow<Long?>> = NullablePreferenceFlowProperty(
         sharedPreferences,
         key?.name,
         0,
@@ -353,7 +352,7 @@ class Prefs(
         SharedPreferences.Editor::putStringSet
     )
 
-    fun StringSetFlow(key: Key? = null): ReadOnlyProperty<Any, Flow<Set<String>?>> = NullablePreferenceFlowProperty(
+    fun StringSetFlow(key: Key? = null): ReadOnlyProperty<Any, MutableStateFlow<Set<String>?>> = NullablePreferenceFlowProperty(
         sharedPreferences,
         key?.name,
         setOf(),
