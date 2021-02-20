@@ -1,7 +1,8 @@
 # Changelog
 
 ## v1.6.0 (2020-10-31)
-Flow wrappers are now MutableStateFlow.
+- Flow wrappers are now MutableStateFlow.
+- Library is now published to Maven Central instead of JCenter
 
 ## v1.5.0 (2020-10-31)
 - Update dependencies to latest versions

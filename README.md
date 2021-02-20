@@ -16,7 +16,7 @@ dependencies {
     implementation 'org.jraf:kprefs:1.6.0'
 }
 ```
-_(The artifact is hosted on jcenter)_
+_Note: the artifact is hosted on Maven Central since v1.6.0 - it used to be hosted on JCenter before this version_
 
 ### 2/ Define your preferences
 Create a `Prefs` instance and pass it a `Context`.  Optionally pass it a `fileName`, and a `fileMode`.
@@ -76,7 +76,7 @@ By default the attribute name is used.
 Simply use your class like this:
 ```kotlin
     private val mainPrefs by lazy { MainPrefs(this) }
-    (...)
+    // (...)
     
     // Get a preference
     val login = mainPrefs.login
