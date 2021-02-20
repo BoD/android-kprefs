@@ -123,4 +123,4 @@ afterEvaluate {
 }
 
 // Run `./gradlew publishToMavenLocal` to publish to the local maven repo
-// Run `./gradlew publish` to publish to Maven Central
+// Run `./gradlew publish` to publish to Maven Central (then go to https://oss.sonatype.org/#stagingRepositories and "close", and "release")
