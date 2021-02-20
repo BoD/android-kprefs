@@ -13,10 +13,10 @@ Kotlin delegates based._
 ```groovy
 dependencies {
     /* ... */
-    implementation 'org.jraf:kprefs:1.5.0'
+    implementation 'org.jraf:kprefs:1.6.0'
 }
 ```
-_(The artifact is hosted on jcenter)_
+_Note: the artifact is hosted on Maven Central since v1.6.0 - it used to be hosted on JCenter before this version_
 
 ### 2/ Define your preferences
 Create a `Prefs` instance and pass it a `Context`.  Optionally pass it a `fileName`, and a `fileMode`.
@@ -63,7 +63,7 @@ Currently, the available types are:
 And they can be exposed as:
 - Raw type
 - `MutableLiveData`
-- `Flow`
+- `MutableStateFlow`
 
 👉 If you pass a `default` value, the attribute type will be non nullable.<br>
 In the example above, `age` is `Int?` whereas `preferredColor` is `Int`.
@@ -76,7 +76,7 @@ By default the attribute name is used.
 Simply use your class like this:
 ```kotlin
     private val mainPrefs by lazy { MainPrefs(this) }
-    (...)
+    // (...)
     
     // Get a preference
     val login = mainPrefs.login
@@ -96,6 +96,9 @@ Simply use your class like this:
     mainPrefs.passwordFlow.onEach {
         Log.d(TAG, "observed password=$it")
     }.launchIn(scope)
+
+    // Update a preference, with Flow
+    mainPrefs.passwordFlow.value = "zxcvbn"
 ```
 
 You can also have a look at the [sample](sample/).

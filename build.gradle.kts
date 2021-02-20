@@ -11,9 +11,8 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:${Versions.ANDROID_GRADLE_PLUGIN}")
+        classpath("com.android.tools.build", "gradle", Versions.ANDROID_GRADLE_PLUGIN)
         classpath(kotlin("gradle-plugin", Versions.KOTLIN))
-        classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:${Versions.BINTRAY_PUBLISH_PLUGIN}")
     }
 }
 
