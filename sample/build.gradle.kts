@@ -1,39 +1,47 @@
+@file:SuppressLint("UseTomlInstead")
+
+import android.annotation.SuppressLint
+
 plugins {
-    id("com.android.application")
-    kotlin("android")
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.kotlinAndroid)
 }
 
 android {
-    compileSdkVersion(30)
+    namespace = "org.jraf.android.kprefs.sample"
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "org.jraf.android.kprefs.sample"
-        minSdkVersion(23)
-        targetSdkVersion(30)
+        minSdk = 23
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0.0"
     }
 
     buildTypes {
-        getByName("release") {
+        release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+//            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
 
-    sourceSets {
-        getByName("main").java.srcDirs("src/main/kotlin")
+    // See https://kotlinlang.org/docs/gradle-configure-project.html#gradle-java-toolchains-support
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
 
+kotlin {
+    // See https://kotlinlang.org/docs/gradle-configure-project.html#gradle-java-toolchains-support
+    jvmToolchain(8)
+}
+
 dependencies {
-    implementation(kotlin("stdlib", Versions.KOTLIN))
-    implementation("androidx.appcompat:appcompat:1.2.0")
-    implementation("androidx.core:core-ktx:1.3.2")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.4")
-    implementation("androidx.security:security-crypto:1.1.0-alpha02")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.core:core-ktx:1.10.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
     implementation(project(":library"))
 }

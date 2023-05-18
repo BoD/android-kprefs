@@ -1,46 +1,49 @@
 plugins {
-    id("com.android.library")
-    kotlin("android")
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinAndroid)
     id("maven-publish")
-    id("org.jetbrains.dokka") version Versions.DOKKA_PLUGIN
+    alias(libs.plugins.dokka)
     id("signing")
 }
 
 group = "org.jraf"
-version = "1.6.0"
+version = "1.7.0"
 description = "kprefs"
 
 android {
-    compileSdkVersion(30)
+    namespace = "org.jraf.android.kprefs"
+    compileSdk = 33
 
     defaultConfig {
-        minSdkVersion(19)
-        targetSdkVersion(30)
+        minSdk = 19
     }
 
     buildTypes {
-        getByName("release") {
+        release {
             isMinifyEnabled = false
         }
     }
 
-    sourceSets {
-        getByName("main").java.srcDirs("src/main/kotlin")
-    }
-
-    kotlinOptions {
-        freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
+    // See https://kotlinlang.org/docs/gradle-configure-project.html#gradle-java-toolchains-support
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
 
+kotlin {
+    // See https://kotlinlang.org/docs/gradle-configure-project.html#gradle-java-toolchains-support
+    jvmToolchain(8)
+}
+
 dependencies {
-    implementation(kotlin("stdlib", Versions.KOTLIN))
-    api("androidx.lifecycle:lifecycle-livedata:${Versions.ANDROIDX_LIFECYCLE_LIVEDATA}")
-    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.COROUTINES}")
+    api(libs.androidx.lifecycle.livedata)
+    api(libs.kotlin.coroutines)
 }
 
 afterEvaluate {
     android.libraryVariants.forEach { variant ->
+        @Suppress("DEPRECATION")
         task<Jar>("jar${variant.name.capitalize()}Sources") {
             description = "Generate a sources Jar for ${variant.name}."
             group = "Publishing"
@@ -48,6 +51,7 @@ afterEvaluate {
             from(variant.sourceSets.map { it.javaDirectories })
         }
 
+        @Suppress("DEPRECATION")
         task<Jar>("jar${variant.name.capitalize()}DokkaHtml") {
             description = "Generate a javadoc (Dokka html) Jar for ${variant.name}."
             group = "Publishing"
@@ -73,7 +77,6 @@ afterEvaluate {
             create<MavenPublication>("releaseMavenPublication") {
                 from(components["release"])
                 artifactId = description
-                artifact(tasks["jarReleaseSources"])
                 artifact(tasks["jarReleaseDokkaHtml"])
 
                 pom {
@@ -120,6 +123,9 @@ afterEvaluate {
         // signing.secretKeyRingFile=<absolute path to the gpg private key>
         sign(publishing.publications)
     }
+
+    // Honestly, ¯\_(ツ)_/¯
+    tasks.getByName("generateMetadataFileForReleaseMavenPublicationPublication").dependsOn("jarReleaseSources")
 }
 
 // Run `./gradlew publishToMavenLocal` to publish to the local maven repo

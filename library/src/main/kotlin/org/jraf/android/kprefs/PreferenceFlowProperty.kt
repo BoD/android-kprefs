@@ -22,14 +22,11 @@
  * limitations under the License.
  */
 
-@file:OptIn(ExperimentalCoroutinesApi::class)
-
 package org.jraf.android.kprefs
 
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -50,14 +47,13 @@ private abstract class WrappedMutableStateFlow<T> : MutableStateFlow<T> {
             wrapped.value = value
         }
 
-    @InternalCoroutinesApi
     override suspend fun collect(collector: FlowCollector<T>) = wrapped.collect(collector)
 
     override fun compareAndSet(expect: T, update: T): Boolean = wrapped.compareAndSet(expect, update)
 
     override suspend fun emit(value: T) = wrapped.emit(value)
 
-    @ExperimentalCoroutinesApi
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun resetReplayCache() = wrapped.resetReplayCache()
 
     override fun tryEmit(value: T): Boolean = wrapped.tryEmit(value)
@@ -167,6 +163,7 @@ internal class NullablePreferenceFlowProperty<T>(
     private val setter: SharedPreferences.Editor.(String, T) -> SharedPreferences.Editor
 ) : ReadOnlyProperty<Any, MutableStateFlow<T?>> {
     private var value: MutableStateFlow<T?>? = null
+
     override fun getValue(thisRef: Any, property: KProperty<*>): MutableStateFlow<T?> {
         if (value == null) {
             value = NullablePreferenceFlow(sharedPreferences, getKey(property, key), default, getter, setter)

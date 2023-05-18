@@ -13,7 +13,7 @@ Kotlin delegates based._
 ```groovy
 dependencies {
     /* ... */
-    implementation 'org.jraf:kprefs:1.6.0'
+    implementation 'org.jraf:kprefs:1.7.0'
 }
 ```
 _Note: the artifact is hosted on Maven Central since v1.6.0 - it used to be hosted on JCenter before this version_

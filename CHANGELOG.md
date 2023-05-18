@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.7.0 (2023-05-18)
+- Update dependencies to latest versions:
+    - Kotlin 1.8.21
+    - Coroutines 1.7.1
+    - LiveData 2.6.1
+
 ## v1.6.0 (2021-02-20)
 - Flow wrappers are now MutableStateFlow.
 - Library is now published to Maven Central instead of JCenter
