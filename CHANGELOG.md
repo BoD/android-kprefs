@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.7.1 (2024-02-10)
+- Fix an issue with an R8 optimization that was causing observers to not be called.
+- Update dependencies to latest versions:
+    - Kotlin 1.9.22
+    - Coroutines 1.7.3
+    - LiveData 2.7.0
+
 ## v1.7.0 (2023-05-18)
 - Update dependencies to latest versions:
     - Kotlin 1.8.21

@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "org.jraf"
-version = "1.7.0"
+version = "1.7.1"
 description = "kprefs"
 
 android {

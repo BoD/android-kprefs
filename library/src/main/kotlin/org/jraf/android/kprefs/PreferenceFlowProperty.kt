@@ -69,7 +69,11 @@ private class NonNullPreferenceFlow<T : Any>(
     private val setter: SharedPreferences.Editor.(String, T) -> SharedPreferences.Editor,
 ) : WrappedMutableStateFlow<T>() {
 
-    private val listener = OnSharedPreferenceChangeListener { _, key ->
+    // This should be private, but when it is, an R8 optimization removes the field, since it's only used in the init block.
+    // But then there is no strong reference to it, so it is garbage collected, and the listener is unregistered (see the
+    // documentation of registerOnSharedPreferenceChangeListener). Making it protected is a workaround.
+    @Suppress("ProtectedInFinal")
+    protected val listener = OnSharedPreferenceChangeListener { _, key ->
         if (this.key == key) super.value = getPreferenceValue()
     }
 
