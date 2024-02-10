@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.7.2 (2024-02-10)
+- Only listen to sharedPreferences when a Flow has at least one subscription. This also fixes the R8 optimization issue for good.
+
 ## v1.7.1 (2024-02-10)
 - Fix an issue with an R8 optimization that was causing observers to not be called.
 - Update dependencies to latest versions:

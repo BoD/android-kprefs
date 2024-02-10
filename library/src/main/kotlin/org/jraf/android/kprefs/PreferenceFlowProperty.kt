@@ -26,11 +26,17 @@ package org.jraf.android.kprefs
 
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import org.jraf.android.kprefs.Prefs.Companion.getKey
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -69,16 +75,22 @@ private class NonNullPreferenceFlow<T : Any>(
     private val setter: SharedPreferences.Editor.(String, T) -> SharedPreferences.Editor,
 ) : WrappedMutableStateFlow<T>() {
 
-    // This should be private, but when it is, an R8 optimization removes the field, since it's only used in the init block.
-    // But then there is no strong reference to it, so it is garbage collected, and the listener is unregistered (see the
-    // documentation of registerOnSharedPreferenceChangeListener). Making it protected is a workaround.
-    @Suppress("ProtectedInFinal")
-    protected val listener = OnSharedPreferenceChangeListener { _, key ->
+    private val listener = OnSharedPreferenceChangeListener { _, key ->
         if (this.key == key) super.value = getPreferenceValue()
     }
 
     init {
-        sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
+        subscriptionCount
+            .map { count -> count > 0 }
+            .distinctUntilChanged()
+            .onEach { isActive ->
+                if (isActive) {
+                    sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
+                } else {
+                    sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener)
+                }
+            }
+            .launchIn(CoroutineScope(EmptyCoroutineContext))
     }
 
     private fun getPreferenceValue(): T {
